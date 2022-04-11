@@ -6,8 +6,8 @@
 * avec un pub sub
 * notion de source de vérité 
 * notion de responsibilité
-* inversion de dépendance ? Ce n'est pas l'événement qui est responsable de mettre à jour les éléments visuels et la donnée (mode impératif), c'est la donnée qui déclenche l'événement et chaque élément s'abonne à la donnée dont il a besoin (déclaratif) 
-
+* inversion de dépendance ? Ce n'est pas l'événement qui est responsable de mettre à jour les éléments visuels et la donnée (mode impératif), c'est la donnée qui déclenche l'événement et chaque élément s'abonne à la donnée dont il a besoin (déclaratif)
+Réactivité = Déclarativité = Responsabilité du composant de gérer son rendu
 
 # pour la ui
 
@@ -42,7 +42,7 @@ Fait sur A Time Paradox
 
 - wrapper réactif au state
 réactive de unitask
-Pull based ou push based? 
+Pull based: le consumer traite la file de producer à son rythme, ici par l'utilisation d'un await
 La solution retenue pour notre dernier projet
 Serialization : mesurer le poids supplémentaire en binaire et en json. 
 Mesurer la différence de perfs ? 
