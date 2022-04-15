@@ -1,0 +1,17 @@
+﻿@font-face {
+    font-family: 'Jakarta';
+    src: url('./PlusJakartaSans-Regular.woff');
+    src: url('./PlusJakartaSans-Regular.woff') format('woff'),
+    url('./PlusJakartaSans-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Jakarta';
+    src: url('./PlusJakartaSans-Bold.woff');
+    src: url('./PlusJakartaSans-Bold.woff') format('woff'),
+    url('./PlusJakartaSans-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}

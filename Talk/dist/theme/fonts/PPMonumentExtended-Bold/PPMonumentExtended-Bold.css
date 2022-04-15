@@ -1,0 +1,8 @@
+﻿@font-face {
+    font-family: 'PPMonumentExtended';
+    src: url('./PPMonumentExtended-Bold.eot');
+    src: url('./PPMonumentExtended-Bold.woff') format('woff'),
+    url('./PPMonumentExtended-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}

@@ -1,0 +1,382 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>UI réactive dans Unity</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+    <link rel="stylesheet" href="dist/theme/fonts/plus-jakarta-sans/jakarta.css">
+    <link rel="stylesheet" href="dist/theme/fonts/PPMonumentExtended-Bold/PPMonumentExtended-Bold.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css">
+
+    <style>
+        * {
+            --r-main-font: Jakarta, sans-serif;
+        }
+
+        * h1 {
+            --r-heading-font: PPMonumentExtended, sans-serif;
+            --r-heading1-size: 1.6em;
+        }
+
+        * h2, * h3, * h4 {
+            --r-heading-font: Jakarta, sans-serif;
+            --r-heading2-size: 4.5rem;
+            --r-heading3-size: 2.5rem;
+        }
+
+        section > section.past:first-child {
+            display: block !important;
+            opacity: 1 !important;
+            transform: translate(0, 0) !important;
+            top: 0px !important;
+        }
+
+        section > section.past:first-child * {
+            font-size: 36px !important;
+            margin-top: 10px;
+        }
+
+        .reveal section img {
+            border: none;
+            outline: 4px solid black;
+        }
+
+        .reveal section img.no-border {
+            border: none;
+            outline: 0;
+        }
+
+        .reveal pre code {
+            max-height: 460px;
+        }
+
+        .reveal pre {
+            width: 100%;
+        }
+
+        small, .small {
+            font-size: 36px !important;
+        }
+
+        .smaller {
+            font-size: 30px !important;
+        }
+
+        pre.small {
+            font-size: 24px !important;
+        }
+
+        pre.smaller {
+            font-size: 20px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>UI réactive dans Unity</h1>
+            <em>Pourquoi et comment brancher sa UI sur un state observable ?</em>
+        </section>
+        <!-- Le monsieur qui parle -->
+        <section>
+            <section><h2>Le monsieur qui parle</h2></section>
+            <section>
+                <h3>Samuel BOUCHET</h3>
+
+                <div>Développeur Unity chez Lonestone</div>
+
+                <img src="assets/photo.png" style="width: 200px;height: auto;"/>
+
+                <div><a href="https://twitter.com/Lythom">@Lythom</a></div>
+
+                <aside class="notes">
+                    <li>formation Ingénieur logiciel</li>
+                    <li>Société de service / édition logicielle / Web / JavaScript / 5 ans de Jeux Vidéo (34 ans)</li>
+                    <li>Développeur JS</li>
+                </aside>
+            </section>
+            <section style="background: black;color: white;">
+                <h3 style="color: white;"><a href="https://a-time-paradox.com/"><img src="assets/lythom_atimeparado.jpg"
+                                                                                     alt="A Time Paradox" height="600"/></a>
+                </h3>
+                <aside class="notes">
+                    <li>A Time Paradox</li>
+                    <li>Solo + freelances - Sorti en 2019 Android + PC</li>
+                    <li>Développé avec Unity</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Mod minecraft - Capsule</h3>
+                <img src="assets/lythom_capsule.gif" style="margin: 0"/>
+                <div><img src="assets/capsule_dls.png" class="no-border" style="margin: 0"/></div>
+                <a href="https://minecraft.curseforge.com/projects/capsule">https://minecraft.curseforge.com/projects/capsule</a>
+            </section>
+            <section>
+                <h3>City Invaders</h3>
+                <span>
+                <img src="assets/CI_Screenshot_02.jpg" style="margin: 0" width="460"/>
+                <img src="assets/CI_Screenshot_05.jpg" style="margin: 0" width="460"/>
+                <img src="assets/CI_Screenshot_06.jpg" style="margin: 0" width="460"/>
+                <img src="assets/logo-lonestone-studio.png" style="margin: 40px 0 0 0;vertical-align: top; outline: 0"
+                     width="460"/>
+                </span>
+                <aside class="notes">
+                    <li>Chez Lonestone depuis 2 ans</li>
+                </aside>
+            </section>
+        </section>
+        <!-- Le plan -->
+        <section>
+            <section>
+                <h2>Le plan</h2>
+                <ol>
+                    <li>Réactivité</li>
+                    <li>Implémentations</li>
+                    <li>Code review</li>
+                </ol>
+                <div><img src="assets/giphy_lookup.webp" alt="" height="160"></div>
+                <aside class="notes">
+                    <li>Réactivité: quoi ? pourquoi ?</li>
+                    <li>Implémentations: comment ?</li>
+                    <li>Code review: implémentation sur mesure pour StarTeam</li>
+                </aside>
+            </section>
+        </section>
+        <!-- La réactivité -->
+        <section>
+            <section>
+                <h2>La réactivité</h2>
+            </section>
+            <!-- Problématique 1 -->
+            <section>
+                <h3 style="margin:0">Problématique 1</h3>
+                <div class="small">Notification de changement</div>
+                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                        class="language-cs" data-trim data-line-numbers>
+                    public class ThemeChanger : MonoBehaviour {
+                        public Button ChangeThemeButton;
+                        public Image Header;
+                        public Image Footer;
+                        
+                        public void Awake() {
+                            ChangeThemeButton.AddListener(() => {
+                                Header.color = Color.black;
+                                Footer.color = Color.black;
+                                // Et comment je met à jour les autres composants à thème ?
+                            });
+                        }
+                    }
+                </code></pre>
+                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                        class="language-cs" data-trim data-line-numbers>
+                    public class ThemeChanger : MonoBehaviour {
+                        public Button ChangeThemeButton;
+                        public Image Header;
+                        public Image Footer;
+                        // une liste de toutes les références
+                        public SomeComponent SomeComponent;
+                        public SomeOtherComponent SomeOtherComponent;
+                        // à maintenir à jour
+                        // des références couplées à travers tout le projet
+                        // comment gérer instantiations dynamiques ?
+                        
+                        public void Awake() {
+                            ChangeThemeButton.AddListener(() => {
+                                Header.color = Color.black;
+                                Footer.color = Color.black;
+                                SomedComponent.SomeImage.color = Color.black;
+                                SomeOtherdComponent.SomeImage.color = Color.black;
+                            });
+                        }
+                    }
+                </code></pre>
+                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                        class="language-cs" data-trim data-line-numbers>
+                    public class ThemeChanger : MonoBehaviour {
+                        public Button ChangeThemeButton;
+                        public Image Header;
+                        public Image Footer;
+                        
+                        public void Awake() {
+                            ChangeThemeButton.AddListener(() => {
+                                Header.color = Color.black;
+                                Footer.color = Color.black;
+                                SomeBroker.Publish(new ThemeChangeEvent(Color.black))
+                                // Lorsque j'instancie un nouveau composant, 
+                                // comment connaitre le thème en cours ?
+                            });
+                        }
+                    }
+                </code></pre>
+                <aside class="notes">
+                    <li>PubSub ok pour le flux "push" mais pas pour le "pull"</li>
+                </aside>
+            </section>
+            <!-- Problématique 1 - Solution ? -->
+            <section>
+                <h3>Problématique 1 - La solution idéale</h3>
+                <ul>
+                    <li>Expose les changements à qui veut s'abonner (PubSub)</li>
+                    <li>Mémorise la dernière valeur connue</li>
+                </ul>
+            </section>
+            <!-- Problématique 2 -->
+            <section>
+                <h3 style="margin:0">Problématique 2</h3>
+                <div class="small">Source de vérité</div>
+                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                        class="language-cs" data-trim data-line-numbers>
+                    public class Level : MonoBehaviour {
+                        public float FloorY = 5f;
+                    }
+                    public class PlayerManager : MonoBehaviour {
+                        public Level CurrentLevel;
+                        public Player P1;
+                        public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
+                    }
+                    public class PlayerA : MonoBehaviour {
+                        public float StartingY;
+                        public void SetStartingY(float floorY) => StartingY = floorY;
+                        public void PlayFXOnFloor() => SuperFX.PlayAtY(StartingY);
+                        // Dans le dernier patch on fait bouger le sol: StartingY n'est plus à jour
+                        // Oh no ! 
+                    }
+                </code></pre>
+                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                        class="language-cs" data-trim data-line-numbers>
+                    public class Level : MonoBehaviour {
+                        public float FloorY = 5f;
+                    }
+                    public class PlayerManager : MonoBehaviour {
+                        public Level CurrentLevel;
+                        public Player P1;
+                        public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
+                    }
+                    public class PlayerA : MonoBehaviour {
+                        public void PlayFXOnFloor(float floorY) => SuperFX.PlayAtY(floorY);
+                        // solution statless: qq1 d'autre gère l'état à ma place
+                    }
+                </code></pre>
+                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                        class="language-cs" data-trim data-line-numbers>
+                    public class Level : MonoBehaviour {
+                        public float FloorY = 5f;
+                    }
+                    public class PlayerManager : MonoBehaviour {
+                        public Level CurrentLevel;
+                        public Player P1;
+                        public void Awake() => P1.SetLevel(CurrentLevel);
+                    }
+                    public class PlayerA : MonoBehaviour {
+                        public Level CurrentLevel;
+                        public void SetStartingY(Level level) => CurrentLevel = level;
+                        public void PlayFXOnFloor() => SuperFX.PlayAtY(CurrentLevel.FloorY);
+                        // Dans le dernier patch on a aussi besoin de l'age du capitaine
+                        // Oh no ! 
+                    }
+                </code></pre>
+                <aside class="notes">
+                    <li>Oh no j'ai oublié de refacto le nom de la méthode</li>
+                </aside>
+            </section>
+            <!-- Problématique 2 - La solution idéale -->
+            <section>
+                <h3>Problématique 2 - La solution idéale</h3>
+                <ul>
+                    <li>Soit notre composant est purement stateless
+                        <ul class="smaller">
+                            <li>Et il est indépendant du state et complètement portable.</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 25px;">Soit il on lui donner accès à l'entièreté du state
+                        <ul class="smaller">
+                            <li>Et il est couplé à l'application mais entièrement autonome.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- Paradigme impératif / déclaratif -->
+            <section>
+                <ul>
+                    <li class="fragment semi-fade-out" data-fragment-index="2">Paradigme impératif / événementiel :
+                        <ul class="small">
+                            <li>événement → rendu</li>
+                        </ul>
+                    </li>
+                    <li class="fragment" data-fragment-index="1" style="margin-top: 25px">Paradigme déclaratif :
+                        <ul class="small">
+                            <li>donnée source → rendu</li>
+                            <li>événément → donnée source</li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    <li>Paradigme impératif / événementiel : un événement (clic, touche clavier) modifie le rendu
+                        directement dans une fonction de rappel. Classiquement à grande échelle:
+                        <ul>
+                            <li>bus d'événements,
+                            <li>Publish-subscribe
+                                pattern,
+                            <li>implémentation directe des fonctions de rappels (ex: clic => tween fade out puis
+                                setActive(false)),
+                            <li>Managers,
+                            <li>Singletons ou appels statics.
+                            <li>→ Couplage entre le code qui reçoit l'événement et le code qui modifie le rendu.</li>
+                        </ul>
+                    </li>
+                    <li>En paradidme déclaratif: chaque vue calcule son rendu en fonction des données sources. Les
+                        événements ne modifient pas le rendu mais les données sources, et le rendu est calculé en
+                        cascade.
+                        <br/>→ Couplage entre le code qui modifie le rendu et la donnée
+                    </li>
+                </aside>
+            </section>
+            <!-- Composant = vue -->
+            <section>
+                <h3>Découpage en composants</h3>
+                <ul>
+                    <li>Unity = approche orientée composants
+                        <ul class="small">
+                            <li>composant <br/>= un comportement associé à un game object <br/>= MonoBehaviour</li>
+                        </ul>
+                    </li>
+                    <li>Approche "web"
+                        <ul class="small">
+                            <li>composant = une vue</li>
+                        </ul>
+                    </li>
+                </ul>
+                <aside class="notes">
+                    <li>Unity - Component = Behaviour</li>
+                    <li>Moi : Component = Vue</li>
+                </aside>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+</script>
+</body>
+</html>
