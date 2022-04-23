@@ -1,3 +1,29 @@
+# Plan
+
+1. Histoire
+- Flux
+- Redux
+- Avantage de Redux
+- Adoption dans le jeu vidéo
+    - Rx (UniRx)
+        => Plutôt pour la gestion événementielle, pour la dimension temporelle
+
+J'aime bien commencer par une démo, mais si c'est pour vous montrer un jeu qui marche ça va pas être très impressionnant
+=> Time travel
+=> state injection
+=> rapport de bugs
+
+2. Architecture générale
+3. Implémentation dans StarTeam
+4. Décisions d'implémentation
+5. Résultat
+
+
+
+
+
+
+
 # la réactivité
 
 - qu'est-ce que ça veut dire réactif ? 
