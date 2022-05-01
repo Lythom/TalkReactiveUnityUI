@@ -126,15 +126,22 @@
                 <h3>Le web en 2013</h3>
                 <ul>
                     <li class="small">Les webmestres préfixent leur recherche par <code>JQuery</code></li>
-                    <li class="small">La boucle classique est <img src="assets/flow_http_server.png" alt="Requête Http → Contrôleur → Donnée → Vue → Requête Http"/></li>
+                    <li class="small">La boucle classique est <img src="assets/flow_http_server.png"
+                                                                   alt="Requête Http → Contrôleur → Donnée → Vue → Requête Http"/>
+                    </li>
                 </ul>
             </section>
             <section>
                 <h3>Apparition de React</h3>
                 <ul>
                     <li class="small">React est une bibliothèque de rendu</li>
-                    <li class="small">La promesse: <code>Vue=fn(Donnée)</code><ul><li>
-                        → Paradigme déclaratif</li></ul></li>
+                    <li class="small">La promesse: <code>Vue=fn(Donnée)</code>
+                        <ul>
+                            <li>
+                                → Paradigme déclaratif
+                            </li>
+                        </ul>
+                    </li>
                     <li class="small">Collocalisation de la vue et du comportement: Programmation par composant</li>
                 </ul>
             </section>
@@ -142,40 +149,64 @@
                 <h3>Flux & Redux (2015)</h3>
                 <div>one-way data flow structure</div>
                 <figure>
-                    <img src="assets/flow_flux.png" alt="Requête Http → Contrôleur → Donnée → Vue → Requête Http"/>
-                    <figcaption style="font-size: 16px;margin:0;padding:0;height:0">Source: https://facebook.github.io/flux/docs/in-depth-overview/</figcaption>
+                    <img src="assets/flow_flux.png" alt="Action → Dispatcher → Store → View → Action"/>
+                    <figcaption style="font-size: 16px;margin:0;padding:0;height:0">Source:
+                        https://facebook.github.io/flux/docs/in-depth-overview/
+                    </figcaption>
                 </figure>
+                <aside class="notes">
+                    <li>Structure similaire au web client/server mais local</li>
+                    <li>Store centralisé: une seule source de vérité monolithique, minimale mais suffisante (aucune
+                        donnée calculée)
+                    </li>
+                    <li>Les vues s'abonnent aux données et se mettent à jour en réaction aux changement de données</li>
+                    <li>La forme de la donnée est figée (~base de donnée)</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Ce qui va servir d'inspiration</h3>
+                <ol>
+                    <li>Circulation des données en sens unique</li>
+                    <li>Organisation en composants autonomes</li>
+                    <li>Le composant s'abonne aux fragments de données dont il a besoin</li>
+                    <li>Centralisation du store minimal mais suffisant</li>
+                    <li>Utilisation de sélecteurs pour accéder aux données calculées</li>
+                </ol>
+                <aside class="notes">
+                    <li>1. Une action ne modifie pas la vue, ni la donnée directement</li>
+                    <li>2. On regroupe vue et comportements. !Cette notion de composant est différente de celle de Unity. Ici composant ~= prefab.</li>
+                </aside>
             </section>
             <section>
                 <h3>Démo</h3>
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
-  <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
+                <!--              <div>TODO une implémentation Unity minimaliste pour illustrer</div>-->
             </section>
         </section>
         <section>
@@ -184,31 +215,50 @@
             </section>
             <section>
                 <h3>Raison 1 : Prédictibilité</h3>
-                <blockquote class="smaller">Les modèles et les outils fournis par Redux permettent de comprendre plus facilement <b>quand, où, pourquoi et comment l'état de votre application est mis à jour</b>, et <b>comment la logique de votre application se comportera</b> lorsque ces changements se produiront.</blockquote>
-                <div style="white-space: nowrap; font-size: 20px">Source: https://redux.js.org/tutorials/essentials/part-1-overview-concepts</div>
+                <blockquote class="smaller">Les modèles et les outils fournis par Redux permettent de comprendre plus
+                    facilement <b>quand, où, pourquoi et comment l'état de votre application est mis à jour</b>, et <b>comment
+                        la logique de votre application se comportera</b> lorsque ces changements se produiront.
+                </blockquote>
+                <div style="white-space: nowrap; font-size: 20px">Source:
+                    https://redux.js.org/tutorials/essentials/part-1-overview-concepts
+                </div>
             </section>
 
             <section>
                 <h3>Raison 2 : Transactionnalité</h3>
                 <ul class="small">
                     <li>En modifiant le state action après action, on garantit son intégrité.</li>
-                    <li>Mise en réseau: les changements de states sont spécifiés et normalisés, ce qui facilite la transmission de messages de changement d'état</li>
+                    <li>Mise en réseau: les changements de states sont spécifiés et normalisés, ce qui facilite la
+                        transmission de messages de changement d'état
+                    </li>
                 </ul>
             </section>
 
             <section>
                 <h3>Raison 3 : Injection d'état</h3>
                 <ul>
-                    <li>Phase de dev: <ul class="small"><li>mettre le jeu dans l'état où la fonctionnalité est testable</li></ul></li>
-                    <li>Phase de debug: <ul class="small">
-                        <li>attacher une image de l'état du jeu lors d'une remontée de bug</li>
-                        <li>mettre le jeu dans l'état où le bug est reproductible</li>
-                    </ul></li>
-                    <li>Phase de runtime: <ul class="small"><li>initialiser une sauvegarde de n'importe quel état</li></ul></li>
+                    <li>Phase de dev:
+                        <ul class="small">
+                            <li>mettre le jeu dans l'état où la fonctionnalité est testable</li>
+                        </ul>
+                    </li>
+                    <li>Phase de debug:
+                        <ul class="small">
+                            <li>attacher une image de l'état du jeu lors d'une remontée de bug</li>
+                            <li>mettre le jeu dans l'état où le bug est reproductible</li>
+                        </ul>
+                    </li>
+                    <li>Phase de runtime:
+                        <ul class="small">
+                            <li>initialiser une sauvegarde de n'importe quel état</li>
+                        </ul>
+                    </li>
                 </ul>
                 <aside class="notes">
                     <li>Pourquoi vouloir ce système pour nos jeux ?</li>
-                    <li>Si un joueur remonte un bug à la 25eme étape qui n'est affichée que les soirs de pleine lune, dévélopper la feature et reproduire peut être fastidieux</li>
+                    <li>Si un joueur remonte un bug à la 25eme étape qui n'est affichée que les soirs de pleine lune,
+                        dévélopper la feature et reproduire peut être fastidieux
+                    </li>
                     <li></li>
                 </aside>
             </section>
@@ -226,40 +276,61 @@
             <section>
                 <h3>Raison 6 : Découpler données et vue</h3>
                 <ul class="small">
-                    <li>Souvent dans Unity, les objets de la scène sont source de vérité mais cette donnée n'est pas accessible facilement au serveur et aux autres joueurs</li>
+                    <li>Souvent dans Unity, les objets de la scène sont source de vérité mais cette donnée n'est pas
+                        accessible facilement au serveur et aux autres joueurs
+                    </li>
                 </ul>
-                <div class="small">→ En déportant la source de vérité dans un state dédié, et en construisant les composants comme des "images réactives" de cet état on facilite le partage et les tests.</div>
+                <div class="small">→ En déportant la source de vérité dans un state dédié, et en construisant les
+                    composants comme des "images réactives" de cet état on facilite le partage et les tests.
+                </div>
             </section>
 
             <section>
                 <h3>Limite 1 : Lourdeur et rigueur</h3>
                 <ul>
-                    <li class="small">Les changements de states doivent être spécifiés et normalisés<ul class="smaller">
-                        <li>Du boilerplate</li>
-                    </ul></li>
-                    <li class="small">Le state devra suivre une structure précise et cohérente <ul class="smaller">
-                        <li>Soit en contrôlant avec le l'outillage</li>
-                        <li>Soit en faisant preuve de rigueur (code reviews et bonne compréhension des mécaniques par tous les membres de l'équipe)</li>
-                    </ul></li>
+                    <li class="small">Les changements de states doivent être spécifiés et normalisés
+                        <ul class="smaller">
+                            <li>Du boilerplate</li>
+                        </ul>
+                    </li>
+                    <li class="small">Le state devra suivre une structure précise et cohérente
+                        <ul class="smaller">
+                            <li>Soit en contrôlant avec le l'outillage</li>
+                            <li>Soit en faisant preuve de rigueur (code reviews et bonne compréhension des mécaniques
+                                par tous les membres de l'équipe)
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </section>
             <section>
                 <h3>Limite 2 : Nécessite une compréhension globale du système</h3>
-                    <ul class="small">
-                    <li>Une action = une transaction. Ex: Une action pour changer les point de vie ? NON<ul class="smaller">
-                        <li>→ Une action "utilisation d'un objet"</li>
-                        <li>→ Une action "échec d'un jet de risque"</li>
-                        <li>→ Etc.</li>
-                    </ul></li>
-                    <li>Source de vérité unique centralisée (Single source of truth)<ul class="smaller">
-                        <li>Non redondance</li>
-                        <li>Externalisation des données calculées</li>
-                    </ul></li>
+                <ul class="small">
+                    <li>Une action = une transaction. Ex: Une action pour changer les point de vie ? NON
+                        <ul class="smaller">
+                            <li>→ Une action "utilisation d'un objet"</li>
+                            <li>→ Une action "échec d'un jet de risque"</li>
+                            <li>→ Etc.</li>
+                        </ul>
+                    </li>
+                    <li>Source de vérité unique centralisée (Single source of truth)
+                        <ul class="smaller">
+                            <li>Non redondance</li>
+                            <li>Externalisation des données calculées</li>
+                        </ul>
+                    </li>
                     <li>State en lecture seule</li>
                 </ul>
                 <aside class="notes">
                     Habitudes de programmations peu habituelles pour les devs et il s'y conformer n'est pas évident
                 </aside>
+            </section>
+            <section>
+                <h3>Limite 3 : Animations et transitions</h3>
+                <ul class="small">
+                    <li>Les états n'indiquent que la situation finale</li>
+                    <li>Chaque composant est autonome pour passer de son état actuel vers son état cible, ce qui rend l'orchestration difficile.</li>
+                </ul>
             </section>
             <!-- Problématique 1 -->
             <!--<section>
@@ -335,136 +406,136 @@
                 </ul>
             </section>-->
             <!-- Problématique 2 -->
-           <!-- <section>
-                <h3 style="margin:0">Problématique 2</h3>
-                <div class="small">Source de vérité</div>
-                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                        class="language-cs" data-trim data-line-numbers>
-                    public class Level : MonoBehaviour {
-                        public float FloorY = 5f;
-                    }
-                    public class PlayerManager : MonoBehaviour {
-                        public Level CurrentLevel;
-                        public Player P1;
-                        public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
-                    }
-                    public class PlayerA : MonoBehaviour {
-                        public float StartingY;
-                        public void SetStartingY(float floorY) => StartingY = floorY;
-                        public void PlayFXOnFloor() => SuperFX.PlayAtY(StartingY);
-                        // Dans le dernier patch on fait bouger le sol: StartingY n'est plus à jour
-                        // Oh no !
-                    }
-                </code></pre>
-                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                        class="language-cs" data-trim data-line-numbers>
-                    public class Level : MonoBehaviour {
-                        public float FloorY = 5f;
-                    }
-                    public class PlayerManager : MonoBehaviour {
-                        public Level CurrentLevel;
-                        public Player P1;
-                        public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
-                    }
-                    public class PlayerA : MonoBehaviour {
-                        public void PlayFXOnFloor(float floorY) => SuperFX.PlayAtY(floorY);
-                        // solution statless: qq1 d'autre gère l'état à ma place
-                    }
-                </code></pre>
-                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                        class="language-cs" data-trim data-line-numbers>
-                    public class Level : MonoBehaviour {
-                        public float FloorY = 5f;
-                    }
-                    public class PlayerManager : MonoBehaviour {
-                        public Level CurrentLevel;
-                        public Player P1;
-                        public void Awake() => P1.SetLevel(CurrentLevel);
-                    }
-                    public class PlayerA : MonoBehaviour {
-                        public Level CurrentLevel;
-                        public void SetStartingY(Level level) => CurrentLevel = level;
-                        public void PlayFXOnFloor() => SuperFX.PlayAtY(CurrentLevel.FloorY);
-                        // Dans le dernier patch on a aussi besoin de l'age du capitaine
-                        // Oh no !
-                    }
-                </code></pre>
-                <aside class="notes">
-                    <li>Oh no j'ai oublié de refacto le nom de la méthode</li>
-                </aside>
-            </section>-->
+            <!-- <section>
+                 <h3 style="margin:0">Problématique 2</h3>
+                 <div class="small">Source de vérité</div>
+                 <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                         class="language-cs" data-trim data-line-numbers>
+                     public class Level : MonoBehaviour {
+                         public float FloorY = 5f;
+                     }
+                     public class PlayerManager : MonoBehaviour {
+                         public Level CurrentLevel;
+                         public Player P1;
+                         public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
+                     }
+                     public class PlayerA : MonoBehaviour {
+                         public float StartingY;
+                         public void SetStartingY(float floorY) => StartingY = floorY;
+                         public void PlayFXOnFloor() => SuperFX.PlayAtY(StartingY);
+                         // Dans le dernier patch on fait bouger le sol: StartingY n'est plus à jour
+                         // Oh no !
+                     }
+                 </code></pre>
+                 <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                         class="language-cs" data-trim data-line-numbers>
+                     public class Level : MonoBehaviour {
+                         public float FloorY = 5f;
+                     }
+                     public class PlayerManager : MonoBehaviour {
+                         public Level CurrentLevel;
+                         public Player P1;
+                         public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
+                     }
+                     public class PlayerA : MonoBehaviour {
+                         public void PlayFXOnFloor(float floorY) => SuperFX.PlayAtY(floorY);
+                         // solution statless: qq1 d'autre gère l'état à ma place
+                     }
+                 </code></pre>
+                 <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
+                         class="language-cs" data-trim data-line-numbers>
+                     public class Level : MonoBehaviour {
+                         public float FloorY = 5f;
+                     }
+                     public class PlayerManager : MonoBehaviour {
+                         public Level CurrentLevel;
+                         public Player P1;
+                         public void Awake() => P1.SetLevel(CurrentLevel);
+                     }
+                     public class PlayerA : MonoBehaviour {
+                         public Level CurrentLevel;
+                         public void SetStartingY(Level level) => CurrentLevel = level;
+                         public void PlayFXOnFloor() => SuperFX.PlayAtY(CurrentLevel.FloorY);
+                         // Dans le dernier patch on a aussi besoin de l'age du capitaine
+                         // Oh no !
+                     }
+                 </code></pre>
+                 <aside class="notes">
+                     <li>Oh no j'ai oublié de refacto le nom de la méthode</li>
+                 </aside>
+             </section>-->
             <!-- Problématique 2 - La solution idéale -->
-           <!-- <section>
-                <h3>Problématique 2 - La solution idéale</h3>
-                <ul>
-                    <li>Soit notre composant est purement stateless
-                        <ul class="smaller">
-                            <li>Et il est indépendant du state et complètement portable.</li>
-                        </ul>
-                    </li>
-                    <li style="margin-top: 25px;">Soit il on lui donner accès à l'entièreté du state
-                        <ul class="smaller">
-                            <li>Et il est couplé à l'application mais entièrement autonome.</li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>-->
+            <!-- <section>
+                 <h3>Problématique 2 - La solution idéale</h3>
+                 <ul>
+                     <li>Soit notre composant est purement stateless
+                         <ul class="smaller">
+                             <li>Et il est indépendant du state et complètement portable.</li>
+                         </ul>
+                     </li>
+                     <li style="margin-top: 25px;">Soit il on lui donner accès à l'entièreté du state
+                         <ul class="smaller">
+                             <li>Et il est couplé à l'application mais entièrement autonome.</li>
+                         </ul>
+                     </li>
+                 </ul>
+             </section>-->
             <!-- Paradigme impératif / déclaratif -->
-           <!-- <section>
-                <ul>
-                    <li class="fragment semi-fade-out" data-fragment-index="2">Paradigme impératif / événementiel :
-                        <ul class="small">
-                            <li>événement → rendu</li>
-                        </ul>
-                    </li>
-                    <li class="fragment" data-fragment-index="1" style="margin-top: 25px">Paradigme déclaratif :
-                        <ul class="small">
-                            <li>donnée source → rendu</li>
-                            <li>événément → donnée source</li>
-                        </ul>
-                    </li>
-                </ul>
-                <aside class="notes">
-                    <li>Paradigme impératif / événementiel : un événement (clic, touche clavier) modifie le rendu
-                        directement dans une fonction de rappel. Classiquement à grande échelle:
-                        <ul>
-                            <li>bus d'événements,
-                            <li>Publish-subscribe
-                                pattern,
-                            <li>implémentation directe des fonctions de rappels (ex: clic => tween fade out puis
-                                setActive(false)),
-                            <li>Managers,
-                            <li>Singletons ou appels statics.
-                            <li>→ Couplage entre le code qui reçoit l'événement et le code qui modifie le rendu.</li>
-                        </ul>
-                    </li>
-                    <li>En paradidme déclaratif: chaque vue calcule son rendu en fonction des données sources. Les
-                        événements ne modifient pas le rendu mais les données sources, et le rendu est calculé en
-                        cascade.
-                        <br/>→ Couplage entre le code qui modifie le rendu et la donnée
-                    </li>
-                </aside>
-            </section>-->
+            <!-- <section>
+                 <ul>
+                     <li class="fragment semi-fade-out" data-fragment-index="2">Paradigme impératif / événementiel :
+                         <ul class="small">
+                             <li>événement → rendu</li>
+                         </ul>
+                     </li>
+                     <li class="fragment" data-fragment-index="1" style="margin-top: 25px">Paradigme déclaratif :
+                         <ul class="small">
+                             <li>donnée source → rendu</li>
+                             <li>événément → donnée source</li>
+                         </ul>
+                     </li>
+                 </ul>
+                 <aside class="notes">
+                     <li>Paradigme impératif / événementiel : un événement (clic, touche clavier) modifie le rendu
+                         directement dans une fonction de rappel. Classiquement à grande échelle:
+                         <ul>
+                             <li>bus d'événements,
+                             <li>Publish-subscribe
+                                 pattern,
+                             <li>implémentation directe des fonctions de rappels (ex: clic => tween fade out puis
+                                 setActive(false)),
+                             <li>Managers,
+                             <li>Singletons ou appels statics.
+                             <li>→ Couplage entre le code qui reçoit l'événement et le code qui modifie le rendu.</li>
+                         </ul>
+                     </li>
+                     <li>En paradidme déclaratif: chaque vue calcule son rendu en fonction des données sources. Les
+                         événements ne modifient pas le rendu mais les données sources, et le rendu est calculé en
+                         cascade.
+                         <br/>→ Couplage entre le code qui modifie le rendu et la donnée
+                     </li>
+                 </aside>
+             </section>-->
             <!-- Composant = vue -->
-           <!-- <section>
-                <h3>Découpage en composants</h3>
-                <ul>
-                    <li>Unity = approche orientée composants
-                        <ul class="small">
-                            <li>composant <br/>= un comportement associé à un game object <br/>= MonoBehaviour</li>
-                        </ul>
-                    </li>
-                    <li>Approche "web"
-                        <ul class="small">
-                            <li>composant = une vue</li>
-                        </ul>
-                    </li>
-                </ul>
-                <aside class="notes">
-                    <li>Unity - Component = Behaviour</li>
-                    <li>Moi : Component = Vue</li>
-                </aside>
-            </section>-->
+            <!-- <section>
+                 <h3>Découpage en composants</h3>
+                 <ul>
+                     <li>Unity = approche orientée composants
+                         <ul class="small">
+                             <li>composant <br/>= un comportement associé à un game object <br/>= MonoBehaviour</li>
+                         </ul>
+                     </li>
+                     <li>Approche "web"
+                         <ul class="small">
+                             <li>composant = une vue</li>
+                         </ul>
+                     </li>
+                 </ul>
+                 <aside class="notes">
+                     <li>Unity - Component = Behaviour</li>
+                     <li>Moi : Component = Vue</li>
+                 </aside>
+             </section>-->
         </section>
 
         <section>
@@ -473,25 +544,25 @@
             </section>
             <section>
                 State découpé en 4
-                    - Données toujours statiques (GameElements)
-                        - Sont initialisées au démarrage de l'application (client, server ou tests)
-                        - Immuables
-                    - données statiques de partie (Ruleset)
-                        - transmises avec la partie (1 fois)
-                        - éviter la redondance
-                    - données dynamiques de partie (GameState)
-                        - Ne peuvent être modifiées que par des GameEvents (= actions)
-                        - Peuvent être écoutées partout
-                        - Accès unique pour un GameEvent: <code>GameState.ApplyEvent();</code>
-                        - Synchronisation des GameEvent entre tous les clients et le serveur
-                    - données dynamiques locales (LocalState)
-                        - Modifiables en réaction a des actions joueurs UNIQUEMENT
-                        - côté client: le serveur ne les connait pas
+                - Données toujours statiques (GameElements)
+                - Sont initialisées au démarrage de l'application (client, server ou tests)
+                - Immuables
+                - données statiques de partie (Ruleset)
+                - transmises avec la partie (1 fois)
+                - éviter la redondance
+                - données dynamiques de partie (GameState)
+                - Ne peuvent être modifiées que par des GameEvents (= actions)
+                - Peuvent être écoutées partout
+                - Accès unique pour un GameEvent: <code>GameState.ApplyEvent();</code>
+                - Synchronisation des GameEvent entre tous les clients et le serveur
+                - données dynamiques locales (LocalState)
+                - Modifiables en réaction a des actions joueurs UNIQUEMENT
+                - côté client: le serveur ne les connait pas
 
                 Des outils de lecture du state
-                    - Les accesseurs pour faciliter l'utilisation et découpler l'utilisation de la forme du state
-                    - Des sélecteurs pour mémoïser des données calculées
-                    - Un composant surchargeable (ConnectedMonoBehaviour) qui fournit les accès au state
+                - Les accesseurs pour faciliter l'utilisation et découpler l'utilisation de la forme du state
+                - Des sélecteurs pour mémoïser des données calculées
+                - Un composant surchargeable (ConnectedMonoBehaviour) qui fournit les accès au state
 
             </section>
         </section>
