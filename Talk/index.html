@@ -111,6 +111,7 @@
                 <div><img src="assets/giphy_lookup.webp" alt="" height="160"></div>
                 <aside class="notes">
                     <li>Comment est née l'idée ? De quoi est-ce qu'il s'agit ?</li>
+                    <li>=> Gestionnaire de l'état de l'application et branchement de la UI</li>
                     <li>Pourquoi ou pourquoi pas ?</li>
                     <li>Structure: Comment ?</li>
                     <li>Code review: implémentation sur mesure pour StarTeam</li>
@@ -164,7 +165,7 @@
                 </aside>
             </section>
             <section>
-                <h3>Ce qui va servir d'inspiration</h3>
+                <h3>On s'inspire et on garde:</h3>
                 <ol>
                     <li>Circulation des données en sens unique</li>
                     <li>Organisation en composants autonomes</li>
@@ -174,7 +175,9 @@
                 </ol>
                 <aside class="notes">
                     <li>1. Une action ne modifie pas la vue, ni la donnée directement</li>
-                    <li>2. On regroupe vue et comportements. !Cette notion de composant est différente de celle de Unity. Ici composant ~= prefab.</li>
+                    <li>2. On regroupe vue et comportements. !Cette notion de composant est différente de celle de
+                        Unity. Ici composant ~= prefab.
+                    </li>
                 </aside>
             </section>
             <section>
@@ -329,7 +332,9 @@
                 <h3>Limite 3 : Animations et transitions</h3>
                 <ul class="small">
                     <li>Les états n'indiquent que la situation finale</li>
-                    <li>Chaque composant est autonome pour passer de son état actuel vers son état cible, ce qui rend l'orchestration difficile.</li>
+                    <li>Chaque composant est autonome pour passer de son état actuel vers son état cible, ce qui rend
+                        l'orchestration difficile.
+                    </li>
                 </ul>
             </section>
             <!-- Problématique 1 -->
@@ -540,30 +545,57 @@
 
         <section>
             <section>
-                <h2 style="white-space: nowrap">Architecture Générale (2/4)</h2>
+                <h2 style="white-space: nowrap">Architecture Générale (3/4)</h2>
             </section>
             <section>
-                State découpé en 4
-                - Données toujours statiques (GameElements)
-                - Sont initialisées au démarrage de l'application (client, server ou tests)
-                - Immuables
-                - données statiques de partie (Ruleset)
-                - transmises avec la partie (1 fois)
-                - éviter la redondance
-                - données dynamiques de partie (GameState)
-                - Ne peuvent être modifiées que par des GameEvents (= actions)
-                - Peuvent être écoutées partout
-                - Accès unique pour un GameEvent: <code>GameState.ApplyEvent();</code>
-                - Synchronisation des GameEvent entre tous les clients et le serveur
-                - données dynamiques locales (LocalState)
-                - Modifiables en réaction a des actions joueurs UNIQUEMENT
-                - côté client: le serveur ne les connait pas
-
-                Des outils de lecture du state
-                - Les accesseurs pour faciliter l'utilisation et découpler l'utilisation de la forme du state
+                État de l'application (state) découpé en 4 :
+                <ol>
+                    <li>Données statiques</li>
+                    <li>Règles de jeu</li>
+                    <li>Données de partie (GameState)</li>
+                    <li>Données locales (LocalState)</li>
+                </ol>
+            </section>
+            <section>
+                <h3>Données statiques</h3>
+                <ul>
+                    <li>Context: client + serveur</li>
+                    <li>Cycle de modification : version</li>
+                    <li>Initialisées au démarrage de l'application</li>
+                    <li>Immuables, accès en lecture seul global et static</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Règles du jeu</h3>
+                <ul>
+                    <li>Context: client + serveur</li>
+                    <li>Cycle de modification : une partie</li>
+                    <li>Transmises avec la partie (1 fois)</li>
+                    <li>Immuables, accès en lecture seule</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Données de jeu</h3>
+                <ul>
+                    <li>Context: client + serveur</li>
+                    <li>Cycle de modification : une action</li>
+                    <li>Transmises 1 fois lors de la connexion</li>
+                    <li>Mise à jour synchronisée serveur / clients</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Données locales</h3>
+                <ul>
+                    <li>Context: client</li>
+                    <li>Cycle de modification : à volonté</li>
+                    <li>Une instance par client, jamais transmise</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Outils de lecture du state</h3>
+                - Les accesseurs pour faciliter l'utilisation et découpler l'utilisation du state de sa forme
                 - Des sélecteurs pour mémoïser des données calculées
                 - Un composant surchargeable (ConnectedMonoBehaviour) qui fournit les accès au state
-
             </section>
         </section>
 
