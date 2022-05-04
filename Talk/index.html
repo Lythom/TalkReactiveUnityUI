@@ -104,9 +104,8 @@
                 <h2>Le plan</h2>
                 <ol>
                     <li>Histoire</li>
-                    <li>Intérêt et limite</li>
-                    <li>Structure pour StarTeam</li>
-                    <li>Code review et démo</li>
+                    <li>Architecture général et exemples</li>
+                    <li>Intérêts et limites</li>
                 </ol>
                 <div><img src="assets/giphy_lookup.webp" alt="" height="160"></div>
                 <aside class="notes">
@@ -121,7 +120,7 @@
         <!-- La réactivité -->
         <section>
             <section>
-                <h2>L'histoire (1/4)</h2>
+                <h2>L'histoire (1/3)</h2>
             </section>
             <section>
                 <h3>Le web en 2013</h3>
@@ -157,7 +156,8 @@
                 </figure>
                 <aside class="notes">
                     <li>Structure similaire au web client/server mais local</li>
-                    <li>Store centralisé: une seule source de vérité monolithique, minimale mais suffisante (aucune
+                    <li>État applicatif centralisé: une seule source de vérité monolithique, minimale mais suffisante
+                        (aucune
                         donnée calculée)
                     </li>
                     <li>Les vues s'abonnent aux données et se mettent à jour en réaction aux changement de données</li>
@@ -170,7 +170,7 @@
                     <li>Circulation des données en sens unique</li>
                     <li>Organisation en composants autonomes</li>
                     <li>Le composant s'abonne aux fragments de données dont il a besoin</li>
-                    <li>Centralisation du store minimal mais suffisant</li>
+                    <li>Centralisation de l'état applicatif, minimal mais suffisant</li>
                     <li>Utilisation de sélecteurs pour accéder aux données calculées</li>
                 </ol>
                 <aside class="notes">
@@ -214,7 +214,213 @@
         </section>
         <section>
             <section>
-                <h2 style="white-space: nowrap">Intérêts et limites (2/4)</h2>
+                <h2 style="white-space: nowrap">Architecture Générale (2/3)</h2>
+            </section>
+            <section>
+                <h3>StarTeam</h3>
+                <img style="float: left" src="assets/mysticwell.png" width="540"/>
+                <div class="smaller" style="float:right;width:40%;margin-top: 70px;">
+                    <ul>
+                        <li style="padding-top: 15px;">Jeu d'aventure coopératif asynchrone</li>
+                        <li style="padding-top: 15px;">3 à 5 joueurs doivent remplir leur objectif en un nombre de jours
+                            limité
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h3 style="margin-bottom: 10px">StarTeam</h3>
+                <div class="smaller" style="float:left;width:35%;text-align: left;margin-top: 170px;">
+                    Les joueurs explorent une carte et actionnent des points d'intérêts pour
+                    déclencher des aventures
+                </div>
+                <img style="float: right;margin:0 0 0 30px;outline:0" src="assets/starteam_aventure.png" width="290"/>
+                <img style="float: right;margin:0 0 0 10px;outline:0" src="assets/starteam_map.png" width="290"/>
+                <div style="float:right;font-size: 14px;line-height: 0.5;text-align: right;margin:8px 0 0 0;padding:0">En développement: images non
+                    représentatives de la qualité finale
+                </div>
+            </section>
+
+            <section>
+                <h3>StarTeam</h3>
+                <img style="float: left" src="assets/starteam_village.png" width="540"/>
+                <div class="smaller" style="float:right;width:41%;margin-top: 70px;">
+                    <ul>
+                        <li style="padding-top: 15px;">Jeu multijoueur en réseau</li>
+                        <li style="padding-top: 15px;">Projet séparé en 3 :<ul>
+                            <li>Serveur (réseau et bdd)</li>
+                            <li>Client (rendu)</li>
+                            <li>Bibliothèque partagée (logique gameplay)</li>
+                        </ul></li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                État de l'application (state) découpé en 4 :
+                <ol>
+                    <li>Données statiques</li>
+                    <li>Règles de jeu</li>
+                    <li>Données de partie (GameState)</li>
+                    <li>Données locales (LocalState)</li>
+                </ol>
+            </section>
+            <section>
+                <h3>Données statiques</h3>
+                <em class="smaller" style="margin: -15px 0 15px 0;display:block">dans StarTeam: GameElements</em>
+                <ul>
+                    <li>Context: client + serveur</li>
+                    <li>Cycle de modification : version</li>
+                    <li>Initialisées au démarrage de l'application</li>
+                    <li>Immuables, accès en lecture seul global et static</li>
+                </ul>
+                <aside class="notes">
+                    <li>GameElements = éléments du jeu, contenu du jeu. Ex: objets, personnages, roles</li>
+                    <li>Création d'une BDD statique: intégrée dans Unity via Odin Inspector et sérialisée avec
+                        MessagePack
+                    </li>
+                </aside>
+            </section>
+            <section>
+                <h3>Règles du jeu</h3>
+                <em class="smaller" style="margin: -15px 0 15px 0;display:block">dans StarTeam: Ruleset</em>
+                <ul>
+                    <li>Context: client + serveur</li>
+                    <li>Cycle de modification : une partie</li>
+                    <li>Transmises avec la partie (1 fois)</li>
+                    <li>Immuables, accès en lecture seule</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Données de jeu</h3>
+                <em class="smaller" style="margin: -15px 0 15px 0;display:block">dans StarTeam: GameState</em>
+                <ul>
+                    <li>Context: client + serveur</li>
+                    <li>Cycle de modification : une action (GameEvent)</li>
+                    <li>Transmises 1 fois lors de la connexion</li>
+                    <li>Mise à jour synchronisée serveur / clients via actions</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Données locales</h3>
+                <em class="smaller" style="margin: -15px 0 15px 0;display:block">dans StarTeam: LocalState</em>
+                <ul>
+                    <li>Context: client</li>
+                    <li>Cycle de modification : à volonté</li>
+                    <li>Une instance par client, jamais transmise</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Outils de lecture du state</h3>
+                <ul class="small">
+                    <li>Les accesseurs pour faciliter l'utilisation et découpler l'utilisation du state de sa forme</li>
+                    <li>Des sélecteurs pour mettre en cache des données calculées et les exposer réactivement</li>
+                    <li>Un composant surchargeable qui fournit les accès au contexte de l'application (ConnectedMonoBehaviour)</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Code review</h3>
+                <code>RollDiceGameEvent</code>
+                <aside class="notes">
+                    <li>AssertApplicationConditions pour debug et documentation (pour implémentation du client)</li>
+                    <li>DoApply = seul endroit où on a le droit de modifier le GameState</li>
+                    <li>GameManager.HandleNetMessage</li>
+                    <li>StarTeamServer.HandleMessageAsync</li>
+                    <li>client → server → client</li>
+                    <li>Optimistic update possible</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Code review</h3>
+                <code>ConnectedMonoBehaviour</code>
+                <aside class="notes">
+                    <li>Gère le cycle de vie</li>
+                    <li>ResetToken invalidé lors du Destroy</li>
+                    <li>ResetToken invalidé puis réinitialisé lors d'un enable ou d'une injection de state</li>
+                    <li>Expose le GameManager (state, SocketManager et SideEffectManager)</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Code review</h3>
+                <code>Reactive&lt;T&gt;</code>
+                <aside class="notes">
+                    <li>Encapsulation de AsyncReactiveProperty pour pouvoir sérializer + Odin inspecteur https://github.com/Cysharp/UniTask</li>
+                    <li>Utilisation: reactiveVar.ForEachAsync(value => {/*do something*/}, CancellationToken)</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Code review</h3>
+                <code>DiceCharacterDisplay</code>
+                <aside class="notes">
+                    <li>Selecteur local</li>
+                    <li>Subscribe GameState</li>
+                    <li>Subscribe LocalState</li>
+                    <li>OnClick Update direct LocalState</li>
+                    <li>SubscribeSideEffect react to events</li>
+                </aside>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2 style="white-space: nowrap">Intérêts et limites (3/3)</h2>
+            </section>
+
+            <section>
+                <h3>Limite 1 : Lourdeur et rigueur</h3>
+                <ul>
+                    <li class="small">Les changements de states doivent être spécifiés et normalisés
+                        <ul class="smaller">
+                            <li>Du boilerplate</li>
+                        </ul>
+                    </li>
+                    <li class="small">Le state devra suivre une structure précise et cohérente
+                        <ul class="smaller">
+                            <li>Soit en contrôlant avec le l'outillage</li>
+                            <li>Soit en faisant preuve de rigueur (code reviews et bonne compréhension des mécaniques
+                                par tous les membres de l'équipe)
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Limite 2 : Nécessite une compréhension globale du système</h3>
+                <ul class="small">
+                    <li>Une action = une transaction. Ex: Une action pour changer les point de vie ? NON
+                        <ul class="smaller">
+                            <li>→ Une action "utilisation d'un objet"</li>
+                            <li>→ Une action "échec d'un jet de risque"</li>
+                            <li>→ Etc.</li>
+                        </ul>
+                    </li>
+                    <li>Source de vérité unique centralisée (Single source of truth)
+                        <ul class="smaller">
+                            <li>Non redondance</li>
+                            <li>Externalisation des données calculées</li>
+                        </ul>
+                    </li>
+                    <li>State en lecture seule</li>
+                </ul>
+                <aside class="notes">
+                    Habitudes de programmations peu habituelles pour les devs et il s'y conformer n'est pas évident
+                </aside>
+            </section>
+            <section>
+                <h3>Limite 3 : Animations et transitions</h3>
+                <ul class="small">
+                    <li>Les états n'indiquent que la situation finale</li>
+                    <li>Chaque composant est autonome pour passer de son état actuel vers son état cible, ce qui rend
+                        l'orchestration difficile.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Limite 4 : peu utile si pas de cache</h3>
+                <ul class="small">
+                    <li>Les composants qui se mettent à jour chaque update pourront lire la valeur depuis le state mais bénéficient peu de la réactivité.</li>
+                    <li>Utile pour la UI et les invalidation de cache</li>
+                    <li>Peu utile pour les objets 3D ou 2D de la scène</li>
+                </ul>
             </section>
             <section>
                 <h3>Raison 1 : Prédictibilité</h3>
@@ -268,7 +474,10 @@
 
             <section>
                 <h3>Raison 4 : Testabilité</h3>
-                <div>Démo un peu plus loin</div>
+                <ul class="smaller">
+                    <li>Tests utiles et faciles à écrire via snapshot des différentiels d'état avant / après application d'une action</li>
+                    <li>State et logique métier isolé et découplé facilite et accélère les tests.</li>
+                </ul>
             </section>
 
             <section>
@@ -282,330 +491,22 @@
                     composants comme des "images réactives" de cet état on facilite le partage et les tests.
                 </div>
             </section>
-
-            <section>
-                <h3>Limite 1 : Lourdeur et rigueur</h3>
-                <ul>
-                    <li class="small">Les changements de states doivent être spécifiés et normalisés
-                        <ul class="smaller">
-                            <li>Du boilerplate</li>
-                        </ul>
-                    </li>
-                    <li class="small">Le state devra suivre une structure précise et cohérente
-                        <ul class="smaller">
-                            <li>Soit en contrôlant avec le l'outillage</li>
-                            <li>Soit en faisant preuve de rigueur (code reviews et bonne compréhension des mécaniques
-                                par tous les membres de l'équipe)
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </section>
-            <section>
-                <h3>Limite 2 : Nécessite une compréhension globale du système</h3>
-                <ul class="small">
-                    <li>Une action = une transaction. Ex: Une action pour changer les point de vie ? NON
-                        <ul class="smaller">
-                            <li>→ Une action "utilisation d'un objet"</li>
-                            <li>→ Une action "échec d'un jet de risque"</li>
-                            <li>→ Etc.</li>
-                        </ul>
-                    </li>
-                    <li>Source de vérité unique centralisée (Single source of truth)
-                        <ul class="smaller">
-                            <li>Non redondance</li>
-                            <li>Externalisation des données calculées</li>
-                        </ul>
-                    </li>
-                    <li>State en lecture seule</li>
-                </ul>
-                <aside class="notes">
-                    Habitudes de programmations peu habituelles pour les devs et il s'y conformer n'est pas évident
-                </aside>
-            </section>
-            <section>
-                <h3>Limite 3 : Animations et transitions</h3>
-                <ul class="small">
-                    <li>Les états n'indiquent que la situation finale</li>
-                    <li>Chaque composant est autonome pour passer de son état actuel vers son état cible, ce qui rend
-                        l'orchestration difficile.
-                    </li>
-                </ul>
-            </section>
-            <!-- Problématique 1 -->
-            <!--<section>
-                <h3 style="margin:0">Problématique 1</h3>
-                <div class="small">Notification de changement</div>
-                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                        class="language-cs" data-trim data-line-numbers>
-                    public class ThemeChanger : MonoBehaviour {
-                        public Button ChangeThemeButton;
-                        public Image Header;
-                        public Image Footer;
-
-                        public void Awake() {
-                            ChangeThemeButton.AddListener(() => {
-                                Header.color = Color.black;
-                                Footer.color = Color.black;
-                                // Et comment je met à jour les autres composants à thème ?
-                            });
-                        }
-                    }
-                </code></pre>
-                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                        class="language-cs" data-trim data-line-numbers>
-                    public class ThemeChanger : MonoBehaviour {
-                        public Button ChangeThemeButton;
-                        public Image Header;
-                        public Image Footer;
-                        // une liste de toutes les références
-                        public SomeComponent SomeComponent;
-                        public SomeOtherComponent SomeOtherComponent;
-                        // à maintenir à jour
-                        // des références couplées à travers tout le projet
-                        // comment gérer instantiations dynamiques ?
-
-                        public void Awake() {
-                            ChangeThemeButton.AddListener(() => {
-                                Header.color = Color.black;
-                                Footer.color = Color.black;
-                                SomedComponent.SomeImage.color = Color.black;
-                                SomeOtherdComponent.SomeImage.color = Color.black;
-                            });
-                        }
-                    }
-                </code></pre>
-                <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                        class="language-cs" data-trim data-line-numbers>
-                    public class ThemeChanger : MonoBehaviour {
-                        public Button ChangeThemeButton;
-                        public Image Header;
-                        public Image Footer;
-
-                        public void Awake() {
-                            ChangeThemeButton.AddListener(() => {
-                                Header.color = Color.black;
-                                Footer.color = Color.black;
-                                SomeBroker.Publish(new ThemeChangeEvent(Color.black))
-                                // Lorsque j'instancie un nouveau composant,
-                                // comment connaitre le thème en cours ?
-                            });
-                        }
-                    }
-                </code></pre>
-                <aside class="notes">
-                    <li>PubSub ok pour le flux "push" mais pas pour le "pull"</li>
-                </aside>
-            </section>-->
-            <!-- Problématique 1 - Solution ? -->
-            <!--<section>
-                <h3>Problématique 1 - La solution idéale</h3>
-                <ul>
-                    <li>Expose les changements à qui veut s'abonner (PubSub)</li>
-                    <li>Mémorise la dernière valeur connue</li>
-                </ul>
-            </section>-->
-            <!-- Problématique 2 -->
-            <!-- <section>
-                 <h3 style="margin:0">Problématique 2</h3>
-                 <div class="small">Source de vérité</div>
-                 <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                         class="language-cs" data-trim data-line-numbers>
-                     public class Level : MonoBehaviour {
-                         public float FloorY = 5f;
-                     }
-                     public class PlayerManager : MonoBehaviour {
-                         public Level CurrentLevel;
-                         public Player P1;
-                         public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
-                     }
-                     public class PlayerA : MonoBehaviour {
-                         public float StartingY;
-                         public void SetStartingY(float floorY) => StartingY = floorY;
-                         public void PlayFXOnFloor() => SuperFX.PlayAtY(StartingY);
-                         // Dans le dernier patch on fait bouger le sol: StartingY n'est plus à jour
-                         // Oh no !
-                     }
-                 </code></pre>
-                 <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                         class="language-cs" data-trim data-line-numbers>
-                     public class Level : MonoBehaviour {
-                         public float FloorY = 5f;
-                     }
-                     public class PlayerManager : MonoBehaviour {
-                         public Level CurrentLevel;
-                         public Player P1;
-                         public void Awake() => P1.SetStartingY(CurrentLevel.FloorY);
-                     }
-                     public class PlayerA : MonoBehaviour {
-                         public void PlayFXOnFloor(float floorY) => SuperFX.PlayAtY(floorY);
-                         // solution statless: qq1 d'autre gère l'état à ma place
-                     }
-                 </code></pre>
-                 <pre class="smaller fragment fade-in-then-out" style="position: absolute" data-id="code-animation"><code
-                         class="language-cs" data-trim data-line-numbers>
-                     public class Level : MonoBehaviour {
-                         public float FloorY = 5f;
-                     }
-                     public class PlayerManager : MonoBehaviour {
-                         public Level CurrentLevel;
-                         public Player P1;
-                         public void Awake() => P1.SetLevel(CurrentLevel);
-                     }
-                     public class PlayerA : MonoBehaviour {
-                         public Level CurrentLevel;
-                         public void SetStartingY(Level level) => CurrentLevel = level;
-                         public void PlayFXOnFloor() => SuperFX.PlayAtY(CurrentLevel.FloorY);
-                         // Dans le dernier patch on a aussi besoin de l'age du capitaine
-                         // Oh no !
-                     }
-                 </code></pre>
-                 <aside class="notes">
-                     <li>Oh no j'ai oublié de refacto le nom de la méthode</li>
-                 </aside>
-             </section>-->
-            <!-- Problématique 2 - La solution idéale -->
-            <!-- <section>
-                 <h3>Problématique 2 - La solution idéale</h3>
-                 <ul>
-                     <li>Soit notre composant est purement stateless
-                         <ul class="smaller">
-                             <li>Et il est indépendant du state et complètement portable.</li>
-                         </ul>
-                     </li>
-                     <li style="margin-top: 25px;">Soit il on lui donner accès à l'entièreté du state
-                         <ul class="smaller">
-                             <li>Et il est couplé à l'application mais entièrement autonome.</li>
-                         </ul>
-                     </li>
-                 </ul>
-             </section>-->
-            <!-- Paradigme impératif / déclaratif -->
-            <!-- <section>
-                 <ul>
-                     <li class="fragment semi-fade-out" data-fragment-index="2">Paradigme impératif / événementiel :
-                         <ul class="small">
-                             <li>événement → rendu</li>
-                         </ul>
-                     </li>
-                     <li class="fragment" data-fragment-index="1" style="margin-top: 25px">Paradigme déclaratif :
-                         <ul class="small">
-                             <li>donnée source → rendu</li>
-                             <li>événément → donnée source</li>
-                         </ul>
-                     </li>
-                 </ul>
-                 <aside class="notes">
-                     <li>Paradigme impératif / événementiel : un événement (clic, touche clavier) modifie le rendu
-                         directement dans une fonction de rappel. Classiquement à grande échelle:
-                         <ul>
-                             <li>bus d'événements,
-                             <li>Publish-subscribe
-                                 pattern,
-                             <li>implémentation directe des fonctions de rappels (ex: clic => tween fade out puis
-                                 setActive(false)),
-                             <li>Managers,
-                             <li>Singletons ou appels statics.
-                             <li>→ Couplage entre le code qui reçoit l'événement et le code qui modifie le rendu.</li>
-                         </ul>
-                     </li>
-                     <li>En paradidme déclaratif: chaque vue calcule son rendu en fonction des données sources. Les
-                         événements ne modifient pas le rendu mais les données sources, et le rendu est calculé en
-                         cascade.
-                         <br/>→ Couplage entre le code qui modifie le rendu et la donnée
-                     </li>
-                 </aside>
-             </section>-->
-            <!-- Composant = vue -->
-            <!-- <section>
-                 <h3>Découpage en composants</h3>
-                 <ul>
-                     <li>Unity = approche orientée composants
-                         <ul class="small">
-                             <li>composant <br/>= un comportement associé à un game object <br/>= MonoBehaviour</li>
-                         </ul>
-                     </li>
-                     <li>Approche "web"
-                         <ul class="small">
-                             <li>composant = une vue</li>
-                         </ul>
-                     </li>
-                 </ul>
-                 <aside class="notes">
-                     <li>Unity - Component = Behaviour</li>
-                     <li>Moi : Component = Vue</li>
-                 </aside>
-             </section>-->
-        </section>
-
-        <section>
-            <section>
-                <h2 style="white-space: nowrap">Architecture Générale (3/4)</h2>
-            </section>
-            <section>
-                État de l'application (state) découpé en 4 :
-                <ol>
-                    <li>Données statiques</li>
-                    <li>Règles de jeu</li>
-                    <li>Données de partie (GameState)</li>
-                    <li>Données locales (LocalState)</li>
-                </ol>
-            </section>
-            <section>
-                <h3>Données statiques</h3>
-                <ul>
-                    <li>Context: client + serveur</li>
-                    <li>Cycle de modification : version</li>
-                    <li>Initialisées au démarrage de l'application</li>
-                    <li>Immuables, accès en lecture seul global et static</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Règles du jeu</h3>
-                <ul>
-                    <li>Context: client + serveur</li>
-                    <li>Cycle de modification : une partie</li>
-                    <li>Transmises avec la partie (1 fois)</li>
-                    <li>Immuables, accès en lecture seule</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Données de jeu</h3>
-                <ul>
-                    <li>Context: client + serveur</li>
-                    <li>Cycle de modification : une action</li>
-                    <li>Transmises 1 fois lors de la connexion</li>
-                    <li>Mise à jour synchronisée serveur / clients</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Données locales</h3>
-                <ul>
-                    <li>Context: client</li>
-                    <li>Cycle de modification : à volonté</li>
-                    <li>Une instance par client, jamais transmise</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Outils de lecture du state</h3>
-                - Les accesseurs pour faciliter l'utilisation et découpler l'utilisation du state de sa forme
-                - Des sélecteurs pour mémoïser des données calculées
-                - Un composant surchargeable (ConnectedMonoBehaviour) qui fournit les accès au state
-            </section>
-        </section>
-
-        <section>
-            <section>
-                <h2>Code review (4/4)</h2>
-            </section>
-            <section>
-                <h3>Tests</h3>
-            </section>
         </section>
 
         <section>
             <section>
                 <h2>Conclusion</h2>
+            </section>
+            <section>
+                <ul>
+                    <li>Centraliser le state sous forme minimale pour le rendre testable, maintenable et performant</li>
+                    <li>Faire circuler les données en sens unique : changements via des actions pour rendre les comportements précictibles et la mise en réseau aisée</li>
+                    <li>Rendre le state observable pour avoir des composants autonomes et réactifs</li>
+                </ul>
+                <aside class="notes">
+                    <li>Ouverture: cette présentation = vue synthétique qui masque un peu de complexité.</li>
+                    <li>Pour le moment cette structure tient ses promesses vis à vis des enjeux techniques de StarTeam.</li>
+                </aside>
             </section>
         </section>
 
