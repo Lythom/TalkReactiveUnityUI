@@ -130,6 +130,9 @@
                                                                    alt="Requête Http → Contrôleur → Donnée → Vue → Requête Http"/>
                     </li>
                 </ul>
+                <aside class="notes">
+                    <li>La structure classique pour concevoir un site web applicatif est alors toujours plus ou moins inspirée du modèle MVC (Modèle Vue Contrôleur): la navigateur prend en compte les actions de l’utilisateur et envoie une requête http au serveur, un contrôleur prend en charge la requête afin de compiler la vue et avec les données dont celle-ci a besoin.</li>
+                </aside>
             </section>
             <section>
                 <h3>Apparition de React</h3>
@@ -175,6 +178,7 @@
                 </ol>
                 <aside class="notes">
                     <li>1. Une action ne modifie pas la vue, ni la donnée directement</li>
+                    <li>Exemple extrême: un bouton de fermeture de modale ne fait jamais (en théorie) un gameObject.setActive(false). A la place, le bouton déclenche une action qui modifie un état de l’application qui permettra au composant de se désactiver en réaction.</li>
                     <li>2. On regroupe vue et comportements. !Cette notion de composant est différente de celle de
                         Unity. Ici composant ~= prefab.
                     </li>
