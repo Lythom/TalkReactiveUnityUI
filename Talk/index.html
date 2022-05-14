@@ -112,6 +112,7 @@
                 <h2>Le plan</h2>
                 <ol>
                     <li>Enjeux techniques</li>
+                    <li>Inspirations</li>
                     <li>Architecture général et exemples</li>
                     <li>Intérêts et limites</li>
                 </ol>
@@ -129,7 +130,7 @@
 
         <section>
             <section>
-                <h2>Enjeux techniques (1/3)</h2>
+                <h2>Enjeux techniques</h2>
             </section>
             <section>
                 <h3>StarTeam</h3>
@@ -161,7 +162,7 @@
                 <h3>StarTeam</h3>
                 <img style="float: left" src="assets/starteam_village.png" width="540"/>
                 <div class="smaller" style="float:right;width:42%;margin-top: 70px;">
-                    <div style="padding-top: 85px;">Jeu multijoueur en réseau <br/>asynchrone simultané</div>
+                    <div style="padding-top: 85px;">Jeu multijoueur en réseau</div>
                 </div>
             </section>
             <section>
@@ -223,7 +224,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
     public TextMeshProUGUI Text;
 
     // On regroupe vue et comportements
-    protected override void OnStateReset(State state) {
+    protected override void OnSetup(State state) {
         Slider.maxValue = MoralInitialValue;
 
         Subscribe(state.Game.Moral, moral => {
@@ -246,8 +247,9 @@ public class MoralDisplay : ConnectedMonoBehaviour {
             </section>
             <section>
                 <h3 class="small">De Redux: Le composant s'abonne aux fragments de données dont il a besoin</h3>
-                <pre class="smaller"><code data-trim class="cs" data-line-numbers="1-25|2-3,5,8,11">
-protected override void OnStateReset(State state) {
+                <pre class="smaller"><code data-trim class="cs" data-line-numbers="1-26|3-4,6,9,12">
+// Composant DiceDisplay
+protected override void OnSetup(State state) {
     var diceState = state.Game.Character[this.CharacterId].Dice[this.DiceIndex];
     var selectedDiceState = state.Local.SelectedDice;
 
@@ -289,7 +291,7 @@ protected override void OnStateReset(State state) {
 
         <section>
             <section>
-                <h2 style="white-space: nowrap">Architecture Générale (2/3)</h2>
+                <h2 style="white-space: nowrap">Architecture Générale</h2>
             </section>
             <section>
                 <img src="assets/StructureStarTeam.png" width="820"
@@ -402,7 +404,7 @@ public static bool CharactersHaveItem(this GameState gameState, CharacterId c, I
                 <div class="smaller">Mettre en cache des données calculées et les exposer réactivement</div>
                 <pre class="smallest"><code data-trim class="cs" data-line-numbers>
 var canMoveToRegionSelector = new Reactive&lt;bool>();
-// CombineLatest est un outil de UniRx pour aggréger des sources réactives
+// CombineLatest est un outil de Unitask pour aggréger des sources réactives
 CombineLatest(state.Local.SelectedRegion, state.Game.IsTurnOver).ForEachAsync(
     // Met à jour canMoveToRegionSelectors à chaque fois que la valeur de
     // SelectedRegion ou IsTurnOver est modifié
@@ -455,7 +457,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
     public TextMeshProUGUI Text;
 
     // On regroupe vue et comportements
-    protected override void OnStateReset(State state) {
+    protected override void OnSetup(State state) {
         Slider.maxValue = MoralInitialValue;
 
         Subscribe(state.Game.Moral, moral => {
@@ -476,7 +478,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
 
         <section>
             <section>
-                <h2 style="white-space: nowrap">Intérêts et limites (3/3)</h2>
+                <h2 style="white-space: nowrap">Intérêts et limites</h2>
             </section>
             <section>
                 <h3>Limite 1 : Lourdeur et rigueur</h3>
@@ -561,7 +563,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                 </aside>
             </section>
             <section>
-                <h3>Raison 1 : Cohérence d'affichage</h3>
+                <h3>Raison 2 : Cohérence d'affichage</h3>
                 <ul class="small">
                     <li>En privilégiant une mécanique déclarative plutôt qu'événementielle, on limite les erreurs d'affichage</li>
                 </ul>
@@ -569,7 +571,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
             </section>
 
             <section>
-                <h3>Raison 2 : Découpler données et vue</h3>
+                <h3>Raison 3 : Découpler données et vue</h3>
                 <ul class="small">
                     <li>Souvent dans Unity, les objets de la scène sont source de vérité mais cette donnée n'est pas
                         accessible facilement au serveur et aux autres joueurs
@@ -581,7 +583,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
             </section>
 
             <section>
-                <h3>Raison 3 : Matrise de la complexité</h3>
+                <h3>Raison 4 : Maîtrise de la complexité</h3>
                 <ul class="small">
                     <li>En ayant des composants autonomes, on cloisonne la complexité.</li>
                 </ul>
@@ -590,13 +592,16 @@ public class MoralDisplay : ConnectedMonoBehaviour {
 
         <section>
             <section>
-                <h2>Conclusion</h2>
+                <h2>Résumé</h2>
             </section>
             <section>
-                <ul>
-                    <li>Centraliser le state sous forme minimale pour le rendre testable, maintenable et performant</li>
-                    <li>Rendre le state observable pour avoir des composants autonomes et réactifs</li>
-                </ul>
+                <img style="float: left" src="assets/StructureStarTeam.png" width="510"/>
+                <div class="smaller" style="float:right;width:45%;margin-top: 40px;">
+                    <ul>
+                        <li>Circulation des données en sens unique + état applicatif centralisé pour découpler rendu et gameplay</li>
+                        <li>Rendre le state observable pour y brancher des composants autonomes et réactifs</li>
+                    </ul>
+                </div>
                 <aside class="notes">
                     <li>Ouverture: cette présentation = vue synthétique qui masque un peu de complexité.</li>
                     <li>Pour le moment cette structure tient ses promesses vis à vis des enjeux techniques de
