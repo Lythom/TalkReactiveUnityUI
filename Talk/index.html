@@ -297,12 +297,14 @@ protected override void OnSetup(State state) {
                 <img src="assets/StructureStarTeam.png" width="820"
                      alt="Structure de l'architecture de StarTeam. Affichage → Action (GameEvent) → State ← Composants → Affichage"/>
                 <aside class="notes">
-                    <li>Circulation des données en sens unique</li>
-                    <li>Organisation en composants autonomes</li>
-                    <li>Le composant s'abonne aux fragments de données</li>
-                    <li>Centralisation de l'état applicatif minimal mais suffisant</li>
-                    <li>Des sélecteurs pour les données calculées ou composées</li>
+                    <li>Décrire les étapes</li>
+                    <li>Découplage entre rendu et logique gameplay</li>
+                    <li>Comment construire un state et des sélecteurs observables ?</li>
+                    <li>Comment construire un composant réactif ?</li>
                 </aside>
+            </section>
+            <section>
+                <div>Comment construire un state et des sélecteurs observables ?</div>
             </section>
             <section>
                 <img src="assets/StateSplit4.png" width="820"
@@ -340,7 +342,7 @@ public class CharacterState {
 }
                 </code></pre>
                 <aside class="notes">
-                    <li>readonly règle d'or: on ne change plus jamais la référence, seulement la valeur.</li>
+                    <li>readonly règle d'or: persister la référence, changer seulement la valeur.</li>
                     <li>Pour ne pas perdre la référence des subscriptions</li>
                     <li>Conservation de la mémoire (on évite de peser sur le garbage collector)</li>
                     <li>Health.Value = newValue // pour un changement de valeur</li>
@@ -417,6 +419,9 @@ CombineLatest(state.Local.SelectedRegion, state.Game.IsTurnOver).ForEachAsync(
                     <li>On peut soit le déclarer dans le composant pour son usage propre,</li>
                     <li>soit l'initialiser avec l'état de l'application</li>
                 </aside>
+            </section>
+            <section>
+                <div>Comment construire un composant réactif ?</div>
             </section>
             <section>
                 <h3><code>ConnectedMonoBehaviour</code></h3>
@@ -513,26 +518,26 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                     <li>Peu utile pour les objets 3D ou 2D de la scène</li>
                 </ul>
             </section>
-<!--            <section>-->
-<!--                <h3>Raison 1 : Prédictibilité</h3>-->
-<!--                <blockquote class="smaller">Les modèles et les outils fournis par Redux permettent de comprendre plus-->
-<!--                    facilement <b>quand, où, pourquoi et comment l'état de votre application est mis à jour</b>, et <b>comment-->
-<!--                        la logique de votre application se comportera</b> lorsque ces changements se produiront.-->
-<!--                </blockquote>-->
-<!--                <div style="white-space: nowrap; font-size: 20px">Source:-->
-<!--                    https://redux.js.org/tutorials/essentials/part-1-overview-concepts-->
-<!--                </div>-->
-<!--            </section>-->
+            <!--            <section>-->
+            <!--                <h3>Raison 1 : Prédictibilité</h3>-->
+            <!--                <blockquote class="smaller">Les modèles et les outils fournis par Redux permettent de comprendre plus-->
+            <!--                    facilement <b>quand, où, pourquoi et comment l'état de votre application est mis à jour</b>, et <b>comment-->
+            <!--                        la logique de votre application se comportera</b> lorsque ces changements se produiront.-->
+            <!--                </blockquote>-->
+            <!--                <div style="white-space: nowrap; font-size: 20px">Source:-->
+            <!--                    https://redux.js.org/tutorials/essentials/part-1-overview-concepts-->
+            <!--                </div>-->
+            <!--            </section>-->
 
-<!--            <section>-->
-<!--                <h3>Raison 2 : Transactionnalité</h3>-->
-<!--                <ul class="small">-->
-<!--                    <li>En modifiant le state action après action, on garantit son intégrité.</li>-->
-<!--                    <li>Mise en réseau: les changements de states sont spécifiés et normalisés, ce qui facilite la-->
-<!--                        transmission de messages de changement d'état-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </section>-->
+            <!--            <section>-->
+            <!--                <h3>Raison 2 : Transactionnalité</h3>-->
+            <!--                <ul class="small">-->
+            <!--                    <li>En modifiant le state action après action, on garantit son intégrité.</li>-->
+            <!--                    <li>Mise en réseau: les changements de states sont spécifiés et normalisés, ce qui facilite la-->
+            <!--                        transmission de messages de changement d'état-->
+            <!--                    </li>-->
+            <!--                </ul>-->
+            <!--            </section>-->
 
             <section>
                 <h3>Raison 1 : Injection d'état</h3>
@@ -565,7 +570,9 @@ public class MoralDisplay : ConnectedMonoBehaviour {
             <section>
                 <h3>Raison 2 : Cohérence d'affichage</h3>
                 <ul class="small">
-                    <li>En privilégiant une mécanique déclarative plutôt qu'événementielle, on limite les erreurs d'affichage</li>
+                    <li>En privilégiant une mécanique déclarative plutôt qu'événementielle, on limite les erreurs
+                        d'affichage
+                    </li>
                 </ul>
                 </aside>
             </section>
@@ -598,7 +605,9 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                 <img style="float: left" src="assets/StructureStarTeam.png" width="510"/>
                 <div class="smaller" style="float:right;width:45%;margin-top: 40px;">
                     <ul>
-                        <li>Circulation des données en sens unique + état applicatif centralisé pour découpler rendu et gameplay</li>
+                        <li>Circulation des données en sens unique + état applicatif centralisé pour découpler rendu et
+                            gameplay
+                        </li>
                         <li>Rendre le state observable pour y brancher des composants autonomes et réactifs</li>
                     </ul>
                 </div>
