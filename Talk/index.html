@@ -113,16 +113,17 @@
                 <ol>
                     <li>Enjeux techniques</li>
                     <li>Inspirations</li>
-                    <li>Architecture général et exemples</li>
+                    <li>Implémentation</li>
                     <li>Intérêts et limites</li>
                 </ol>
                 <div><img src="assets/giphy_lookup.webp" alt="" height="160"></div>
                 <aside class="notes">
-                    <li>Comment est née l'idée ? De quoi est-ce qu'il s'agit ?</li>
-                    <li>=> Gestionnaire de l'état de l'application et branchement de la UI</li>
-                    <li>Pourquoi ou pourquoi pas ?</li>
-                    <li>Structure: Comment ?</li>
-                    <li>Code review: implémentation sur mesure pour StarTeam</li>
+                    <li>StarTeam, qu'est-ce que c'est → contraintes ?</li>
+                    <li>Inspirations - principes fondateurs / piliers qui rendent intéressante la réactivité</li>
+                    <li>Général conceptuel → Général concret → spécifique focus state observable et composants
+                        réactifs
+                    </li>
+                    <li>Discussion quand ou pourquoi ?</li>
                 </aside>
             </section>
         </section>
@@ -197,27 +198,7 @@
                 <h2>On s'inspire et on garde</h2>
             </section>
             <section>
-                <h3>De Flux et Redux: la circulation des données en sens unique</h3>
-                <figure>
-                    <img src="assets/flow_flux.png" alt="Action → Dispatcher → Store → View → Action"/>
-                    <figcaption style="font-size: 16px;margin:0;padding:0;height:0">structure proposée par flux et redux
-                        - Source:
-                        https://facebook.github.io/flux/docs/in-depth-overview/
-                    </figcaption>
-                </figure>
-                <aside class="notes">
-                    <li>Abonnement des vues. Dans ce modèle, les vues s'abonnent aux données et se mettent à jour en
-                        réaction aux changement de données
-                    </li>
-                    <li>Une action ne modifie pas la vue, ni la donnée directement</li>
-                    <li>Exemple extrême: un bouton de fermeture de modale ne fait jamais (en théorie) un
-                        gameObject.setActive(false). A la place, le bouton déclenche une action qui modifie un état de
-                        l’application qui permettra au composant de se désactiver en réaction.
-                    </li>
-                </aside>
-            </section>
-            <section>
-                <h3>De React: une organisation en composants autonomes</h3>
+                <h3>De ReactJS: une organisation en composants autonomes</h3>
                 <pre class="smaller"><code data-trim class="cs" data-line-numbers="1-18|7,10-11,14-16">
 public class MoralDisplay : ConnectedMonoBehaviour {
     public Slider Slider;
@@ -243,6 +224,23 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                 <aside class="notes">
                     <li>!Cette notion de composant est différente de celle de Unity. Ici composant ~= prefab.</li>
                     <li>synergie avec le modèle atomique : atomes, molécules, organismes</li>
+                </aside>
+            </section>
+            <section>
+                <h3 class="small">De Redux: Centralisation de l'état applicatif</h3>
+                <ul>
+                    <li>Minimal mais suffisant
+                        <ul>
+                            <li>Pas de données redondantes ou calculées</li>
+                        </ul>
+                    </li>
+                    <li>Utilisation sélecteurs réactifs pour accéder aux données calculées ou composées</li>
+                    <li>Solution pour rendre possible l'autonomie des composants</li>
+                </ul>
+                <aside class="notes">
+                    <li>Si le state est réparti dans des composants, accès plus compliqué, obligé de créer des
+                        interfaces
+                    </li>
                 </aside>
             </section>
             <section>
@@ -272,26 +270,36 @@ protected override void OnSetup(State state) {
                 <img src="assets/DiceDemo.gif" width="320"
                      style="position:relative; float: right;margin-top: -120px;margin-right: 30px;z-index: 999"/>
                 <aside class="notes">
-                    <li>!Cette notion de composant est différente de celle de Unity. Ici composant ~= prefab.</li>
-                    <li>synergie avec le modèle atomique : atomes, molécules, organismes</li>
+                    <li>Composant configuré pour un personnage et un dé + dé sélectionné</li>
+                    <li>En écoute uniquement sur les données qui l'intéresse (le reste du state peut s'écrouler)</li>
                 </aside>
             </section>
             <section>
-                <h3 class="small">De Redux: Centralisation de l'état applicatif</h3>
-                <ul>
-                    <li>Minimal mais suffisant
+                <h3>De Flux et Redux: la circulation des données en sens unique</h3>
+                <figure>
+                    <img src="assets/flow_flux.png" alt="Action → Dispatcher → Store → View → Action"/>
+                    <figcaption style="font-size: 16px;margin:0;padding:0;height:0">structure proposée par flux et redux
+                        - Source:
+                        https://facebook.github.io/flux/docs/in-depth-overview/
+                    </figcaption>
+                </figure>
+                <aside class="notes">
+                    <li>On pourrait autoriser les vues à modifier l'état mais
                         <ul>
-                            <li>Pas de données redondantes ou calculées</li>
+                            <li>pb réseau (exécution côté serveur / synchro client/serveur)</li>
+                            <li>pb de responsabilité → si plusieurs composants modifient le même état c'est compliqué
+                            </li>
                         </ul>
                     </li>
-                    <li>Utilisation sélecteurs réactifs pour accéder aux données calculées ou composées</li>
-                </ul>
+                    <li>L'action porte la responsabilité de faire évoluer le state. Ne modifie pas la vue.</li>
+                    <li>Dans redux le reducer créer la modif, ici c'est l'action</li>
+                </aside>
             </section>
         </section>
 
         <section>
             <section>
-                <h2 style="white-space: nowrap">Architecture Générale</h2>
+                <h2 style="white-space: nowrap">Implémentation</h2>
             </section>
             <section>
                 <img src="assets/StructureStarTeam.png" width="820"
@@ -304,7 +312,11 @@ protected override void OnSetup(State state) {
                 </aside>
             </section>
             <section>
-                <div>Comment construire un state et des sélecteurs observables ?</div>
+                <img style="float: right;margin-top: 130px;" src="assets/StructureStarTeam_StateSelector.png"
+                     width="440"/>
+                <div class="smaller" style="float:left;width:50%;margin-top: 300px;">
+                    Comment construire un state et des sélecteurs observables ?
+                </div>
             </section>
             <section>
                 <img src="assets/StateSplit4.png" width="820"
@@ -367,6 +379,12 @@ public class GameState {
     }
 }
                 </code></pre>
+                <aside class="notes">
+                    <li>Dans le constructeur: pas d'affectation pour ne pas se brancher sur l'état réactiv source (je
+                        sais pas d'où il vient)
+                    </li>
+                    <li>Dans l'update: préservation de la référence via une logique de synchronisation des valeurs</li>
+                </aside>
             </section>
             <section>
                 <h3>Outils de lecture du state</h3>
@@ -421,7 +439,10 @@ CombineLatest(state.Local.SelectedRegion, state.Game.IsTurnOver).ForEachAsync(
                 </aside>
             </section>
             <section>
-                <div>Comment construire un composant réactif ?</div>
+                <img style="float: left;margin-top: 130px;" src="assets/StructureStarTeam_Components.png" width="480"/>
+                <div class="smaller" style="float:right;width:50%;margin-top: 300px;">
+                    Comment construire un composant réactif ?
+                </div>
             </section>
             <section>
                 <h3><code>ConnectedMonoBehaviour</code></h3>
@@ -479,6 +500,37 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                 <img src="assets/MoralDemo.gif" width="320"
                      style="position:relative; float: right;margin-top: -450px;margin-right: 10px;z-index: 999"/>
             </section>
+            <section>
+                <h3><code>ConnectedMonoBehaviour à l'œuvre</code></h3>
+                <pre class="smaller"><code data-trim class="cs" data-line-numbers="1-26|3-4,6,9,12">
+// Composant DiceDisplay
+protected override void OnSetup(State state) {
+    var diceState = state.GetDice(this.CharacterId, transform.GetSiblingIndex());
+    var selectedDiceState = state.Local.SelectedDice;
+
+    Subscribe(diceState.Used, diceState.Color, (used, color) => {
+        Face.color = Configurator.GetColor(color).WithAlpha(used ? DisabledOpacity : 1f);
+    });
+    Subscribe(diceState.Value, value => {
+        Face.sprite = Configurator.DB.DiceFaces[Mathf.Clamp(value - 1, 0, 5)];
+    });
+    Subscribe(selectedDiceState, selectedDice => {
+        var isSelected = selectedDice.HasValue && selectedDice.Value.DiceIndex == diceIdx;
+        if (isSelected) {
+            breathAnim.Play();
+        } else {
+            breathAnim.ResetAndStop();
+        }
+    });
+}
+                </code></pre>
+                <img src="assets/DiceDemo.gif" width="320"
+                     style="position:relative; float: right;margin-top: -120px;margin-right: 30px;z-index: 999"/>
+                <aside class="notes">
+                    <li>Utilisation d'un accesseur</li>
+                    <li>Découpage des Subscribe par élément de rendu</li>
+                </aside>
+            </section>
         </section>
 
         <section>
@@ -488,8 +540,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
             <section>
                 <h3>Limite 1 : Lourdeur et rigueur</h3>
                 <ul>
-                    <li class="small">Les changements de states doivent être spécifiés et normalisés</li>
-                    <li class="small">Le state devra suivre une structure précise et cohérente
+                    <li class="small">Le state devra suivre une structure cohérente et respecter l'intégrité des références
                         <ul class="smaller">
                             <li>Soit en contrôlant avec le l'outillage</li>
                             <li>Soit en faisant preuve de rigueur (code reviews et bonne compréhension des mécaniques
@@ -497,6 +548,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                             </li>
                         </ul>
                     </li>
+                    <li class="small">Les changements de states doivent être spécifiés et normalisés via des actions</li>
                 </ul>
             </section>
             <section>
@@ -515,7 +567,7 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                         bénéficient peu de la réactivité.
                     </li>
                     <li>Utile pour la UI et les invalidation de cache</li>
-                    <li>Peu utile pour les objets 3D ou 2D de la scène</li>
+                    <li>Peu utile pour les objets 3D ou 2D de la scène branché sur la boucle update</li>
                 </ul>
             </section>
             <!--            <section>-->
@@ -540,7 +592,24 @@ public class MoralDisplay : ConnectedMonoBehaviour {
             <!--            </section>-->
 
             <section>
-                <h3>Raison 1 : Injection d'état</h3>
+                <h3>Raison 1 : Performances</h3>
+                <ul>
+                    <li>Invalider le cache de manière précise pour ne recalculer que le nécessaire</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Raison 2 : Cohérence d'affichage</h3>
+                <ul class="small">
+                    <li>En privilégiant une mécanique déclarative plutôt qu'événementielle, on limite les erreurs
+                        d'affichage
+                    </li>
+                </ul>
+                <aside class="notes">
+                    <li>Composants branchés sur le même état minimal: tout le cache est toujours à jour</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Raison 3 : Injection d'état</h3>
                 <ul>
                     <li>Phase de dev:
                         <ul class="small">
@@ -560,35 +629,11 @@ public class MoralDisplay : ConnectedMonoBehaviour {
                     </li>
                 </ul>
                 <aside class="notes">
-                    <li>Pourquoi vouloir ce système pour nos jeux ?</li>
                     <li>Si un joueur remonte un bug à la 25eme étape qui n'est affichée que les soirs de pleine lune,
                         dévélopper la feature et reproduire peut être fastidieux
                     </li>
-                    <li></li>
                 </aside>
             </section>
-            <section>
-                <h3>Raison 2 : Cohérence d'affichage</h3>
-                <ul class="small">
-                    <li>En privilégiant une mécanique déclarative plutôt qu'événementielle, on limite les erreurs
-                        d'affichage
-                    </li>
-                </ul>
-                </aside>
-            </section>
-
-            <section>
-                <h3>Raison 3 : Découpler données et vue</h3>
-                <ul class="small">
-                    <li>Souvent dans Unity, les objets de la scène sont source de vérité mais cette donnée n'est pas
-                        accessible facilement au serveur et aux autres joueurs
-                    </li>
-                </ul>
-                <div class="small">→ En déportant la source de vérité dans un state dédié, et en construisant les
-                    composants comme des "images réactives" de cet état on facilite la mise en réseau et les tests.
-                </div>
-            </section>
-
             <section>
                 <h3>Raison 4 : Maîtrise de la complexité</h3>
                 <ul class="small">
